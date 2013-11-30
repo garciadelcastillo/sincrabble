@@ -2,9 +2,10 @@
 
 <p>This was your query: '<%= @query %>'</p>
 
-<p>Letters:</p>
-<ul>
-	<% @letters.each do |v| %>
-		<li><%= v %></li>
+<p>Words:</p>
+<dl>
+	<% @possible_words.each do |v| %>
+		<dt><%= v[0] %></dt>
+		<dd><%= v[1] %></dd>
 	<% end %>
-</ul>
+</dl>

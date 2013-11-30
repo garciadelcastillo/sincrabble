@@ -1,34 +1,32 @@
-
+# Scrabble Solver app
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require './server/helpers.rb'
 
-# home route
+# HOME route
 get '/' do 
-	"Welcome to the DMC's Scrabble Solver!"
+	erb :index
 end
 
-# test params route
-get '/sayhi/:name' do
-	"Hi #{params[:name]}!"
+# Main POST action
+post '/solve' do
+	@query = reverse_text(params[:letters])
+	@letters = combine_text(params[:letters])
+	# puts @letters
+	erb :scrabbled
 end
 
-get '/form' do
-	erb :form
+# A fallback GET for the '/solve' route
+get '/solve' do
+	redirect to('/')
 end
 
-post '/form' do
-	"You said '#{params[:message]}' " +
-	"Reversed message is: #{reverse_text(params[:message])}"
-end
-
-not_found do  
+# Custom 404
+not_found do
 	status 404  
-	'Page not found, sorry!'  
-end  
+	'Page not found, sorry! XD'  
+end 
 
 
-def reverse_text(_txt)
 
-	_txt.reverse
 
-end

@@ -12,7 +12,7 @@ end
 post '/solve' do
 	solution = solve_scrabble(params[:letters])
 
-	@query = params[:letters]
+	@clean_query = solution[:clean_query]
 	@number_of_permutations = solution[:permutations]
 	@number_of_possible_words = solution[:number_of_possible_words]
 	@top_ten_words = solution[:top_ten_words]
@@ -36,8 +36,8 @@ helpers do
 
 	def solve_scrabble(_query)
 
-		# TODO: clear the entry from non-valid input (a-z)
-		letters = _query.downcase.split(//)
+		clean_query = _query.downcase.tr('^a-z', '')  # clean the input string from non-letter inputs 
+		letters = clean_query.split(//)
 
 		# generate all posible permutations of the given letters
 		perm = {} 
@@ -63,6 +63,7 @@ helpers do
 
 		# return a hash with output info
 		return { 
+			clean_query: clean_query,
 			permutations: perm.length,
 			number_of_possible_words: words.length,
 			top_ten_words: top_ten_words

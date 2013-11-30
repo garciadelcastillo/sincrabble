@@ -1,11 +1,30 @@
-<h3>Scrabbled!</h3>
+<div class="container">
 
-<p><em><%= @number_of_permutations %> permutations</em> were analysed for your entry <strong>'<%= @clean_query %>'</strong>, out of which <strong><%= @number_of_possible_words %> valid words </strong> were found.</p>
+	<h2 class="text-center">Scrabbled!</h2>
 
-<p><strong>Top 10 scoring words:</strong></p>
-<dl class="dl-horizontal">
-	<% @top_ten_words.each do |v| %>
-		<dt><%= v[0] %></dt>
-		<dd><%= v[1] %> points</dd>
-	<% end %>
-</dl>
+	<div class="panel panel-info">
+
+		<div class="panel-heading">
+			<h4 class="text-center"><em><%= @number_of_permutations %> permutations</em> were analysed for your entry <strong>'<%= @clean_query %>'</strong>, out of which <strong><%= @number_of_possible_words %> valid words </strong> were found.</h4>
+		</div>
+
+		<% if @top_ten_words.length > 0 %>
+		<div class="panel-body">
+			<div class="col-md-6 col-md-offset-3">
+			
+				<p><strong>Top <%= @top_ten_words.length %> scoring words:</strong></p>
+				<dl class="dl-horizontal">
+					<% @top_ten_words.each do |v| %>
+					<dt><%= v[0] %></dt>
+					<dd><%= v[1] %> points</dd>
+					<% end %>
+				</dl>
+
+			</div>
+		</div>
+		<% end %>
+	</div>
+
+	<a href="../" class="btn btn-info pull-right">Start over</a>
+
+</div>

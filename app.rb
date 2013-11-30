@@ -1,6 +1,6 @@
 
-# require 'rubygems'
 require 'sinatra'
+require 'sinatra/reloader' if development?
 
 # home route
 get '/' do 
@@ -17,7 +17,7 @@ get '/form' do
 end
 
 post '/form' do
-	"You said '#{params[:message]}'"
+	"You said '#{params[:message]}' " +
 	"Reversed message is: #{reverse_text(params[:message])}"
 end
 

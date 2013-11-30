@@ -1,11 +1,11 @@
 <h3>Scrabbled!</h3>
 
-<p>This was your query: '<%= @query %>'</p>
+<p><em><%= @number_of_permutations %> permutations</em> were analysed for your entry <strong>'<%= @query %>'</strong>, out of which <strong><%= @number_of_possible_words %> valid words </strong> were found.</p>
 
-<p>Words:</p>
-<dl>
-	<% @possible_words.each do |v| %>
+<p><strong>Top 10 scoring words:</strong></p>
+<dl class="dl-horizontal">
+	<% @top_ten_words.each do |v| %>
 		<dt><%= v[0] %></dt>
-		<dd><%= v[1] %></dd>
+		<dd><%= v[1] %> points</dd>
 	<% end %>
 </dl>

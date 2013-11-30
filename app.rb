@@ -10,9 +10,13 @@ end
 
 # Main POST action
 post '/solve' do
+	solution = solve_scrabble(params[:letters])
+
 	@query = params[:letters]
-	@letters = combine_text(params[:letters])
-	@possible_words = recombine_letters(params[:letters])
+	@number_of_permutations = solution[:permutations]
+	@number_of_possible_words = solution[:number_of_possible_words]
+	@top_ten_words = solution[:top_ten_words]
+
 	erb :scrabbled
 end
 
@@ -30,46 +34,39 @@ end
 
 helpers do
 
-	def reverse_text(_txt)
-		_txt.reverse
-	end
+	def solve_scrabble(_query)
 
-	def combine_text(_txt)
-		s = _txt
-		letters = s.split(//)
-	end
+		# TODO: clear the entry from non-valid input (a-z)
+		letters = _query.downcase.split(//)
 
-	def recombine_letters(_txt)
-		s = _txt.downcase
-		letters = s.split(//)
-		len = _txt.length
-
-		dict = {}
-		for i in 1..len
+		# generate all posible permutations of the given letters
+		perm = {} 
+		for i in 1.._query.length
 			letters.permutation(i).each do |word|
-				dict[word.join] = true
+				perm[word.join] = true
 			end
 		end
 
-		puts "DEBUG: Generated " + dict.length.to_s + " permutations"
-
-		matches = []
+		# parse the dictionary file for correct english words
+		words = [] 
 		File.open('./assets/words.txt').each_line do |line|
 			line.chomp!
-			matches << line if dict[line]
+			words << line if perm[line]
 		end
 
+		# calculate scrabble score for each word
 		scores = {}
-		matches.each do |word|
+		words.each do |word|
 			scores[word] = calculate_word_score(word)
-			puts word + ": " + scores[word].to_s + " points"
 		end
+		top_ten_words = scores.sort_by{|k,v|v}.reverse[0..9]
 
-		puts scores
-		sorted_scores = scores.sort_by{|k,v|v}.reverse[0..9]
-		puts sorted_scores
-
-		return sorted_scores 
+		# return a hash with output info
+		return { 
+			permutations: perm.length,
+			number_of_possible_words: words.length,
+			top_ten_words: top_ten_words
+			}
 
 	end
 
